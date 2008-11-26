@@ -1,0 +1,11 @@
+$: << File.expand_path(File.dirname(__FILE__) + "/lib")
+require 'creep/creep'
+require 'creep/creep_navigation'
+require 'creep/creep_list'
+require 'money/money'
+require 'lives/lives'
+require 'geometry/path'
+require 'tower/tower'
+require 'tower/tower_list'
+require 'space'
+require 'projectile/projectile'
