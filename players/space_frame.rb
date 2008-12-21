@@ -27,13 +27,9 @@ module SpaceFrame
     @space.start() if @space != nil
   end
   def update_all
+    update_creeps
+    update_towers
     update_misc
-    @space.creep.each do |creep|
-      creep.set_prop(creep.prop) if !creep.prop.nil?
-    end
-    @space.towers.each do |tower|
-      tower.set_prop(tower.prop)
-    end
     if @refresher.nil?
       build do
         refresher :id => "refresher"
@@ -42,8 +38,24 @@ module SpaceFrame
     end
     add(@refresher)
     remove(@refresher)
+    update_projectiles
+  end
+  
+  def update_creeps
+    @space.creep.each do |creep|
+      creep.update_prop
+    end
+  end
+  
+  def update_towers
+    @space.towers.each do |tower|
+      tower.update_prop
+    end
+  end
+  
+  def update_projectiles
     @space.projectiles.each do |projectile|
-      projectile.set_prop(projectile.prop)
+      projectile.update_prop
     end
     #self.update
   end
@@ -64,8 +76,8 @@ module SpaceFrame
   
   def tick_countdown(dif)
     label = scene.find("wave_countdown")
-    label.text = "Next Creep Wave in: #{(Space::CLOCK - dif).to_i}"
-    #label.update
+    time = (Space::CLOCK - dif).to_i
+    label.text = "Next Creep Wave in: #{time}"
   end
   
   def update_misc

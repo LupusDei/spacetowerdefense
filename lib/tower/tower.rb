@@ -52,6 +52,12 @@ module Tower
     def set_prop(prop)
       if prop != nil
         @prop = prop
+        update_prop
+      end
+    end
+    
+    def update_prop
+      if @prop != nil
         @prop.style.background_image = @image_file
         @prop.style.x = @x.to_s
         @prop.style.y = @y.to_s
@@ -287,10 +293,19 @@ module Tower
     
     def fire_projectile(creep,game_clock)
       @last_fired = game_clock
+      change_image(Time.now)
       random_image_index = self.class.rand_num.get(AMOUNT_OF_IMAGES * 10)
       projectile = Projectile::ImprobabilityProjectile.new(self, creep, random_image_index)
       @attack_speed = self.class.rand_num.get(self.class.attack_speed[@level])
       return projectile
+    end
+    
+    def change_image(time)
+      Thread.start do
+        self.image_file = "images/towers/ImprobabilityTower2.png"
+        sleep(0.3)
+        self.image_file = "images/towers/ImprobabilityTower.png"
+      end
     end
     
     def in_range?(creep)

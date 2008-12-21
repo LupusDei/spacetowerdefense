@@ -128,12 +128,18 @@ module Projectile
     end
     
     def set_prop(prop)
-      @prop = prop
-      @prop.style.x = @x.to_i.to_s
-      @prop.style.y = @y.to_i.to_s
-      @prop.style.width = '19'
-      @prop.style.height = '19'
-      @prop.style.background_image = self.class.image_file
+      @prop = prop if prop != nil
+      update_prop
+    end
+    
+    def update_prop
+      if @prop != nil
+        @prop.style.x = @x.to_i.to_s
+        @prop.style.y = @y.to_i.to_s
+        @prop.style.width = '19'
+        @prop.style.height = '19'
+        @prop.style.background_image = self.class.image_file
+      end
     end
     
     def get_distance(x1,y1,x2,y2)
@@ -152,6 +158,10 @@ module Projectile
     
     def set_prop(prop)
       @prop = prop
+      update_prop
+    end
+    
+    def update_prop
       @prop.style.x = @x.to_i.to_s
       @prop.style.y = @y.to_i.to_s
       @prop.style.width = '10'
@@ -229,6 +239,10 @@ module Projectile
     
     def set_prop(prop)
       @prop = prop
+      update_prop
+    end
+    
+    def update_prop
       @prop.style.x = @x.to_i.to_s
       @prop.style.y = @y.to_i.to_s
       @prop.style.width = '20'
@@ -311,13 +325,17 @@ module Projectile
     
     def set_prop(prop)
       @prop = prop
+      update_prop
+    end
+    
+    def update_prop
       @prop.style.x = (@x.to_i - 15).to_s
       @prop.style.y = (@y.to_i - 15).to_s
       @prop.style.width = '70'
       @prop.style.height = '70'
       @prop.style.background_image = @image_file
       @prop.style.transparency = '85'
-      @prop.style.transparency = '70' if @tower.level == 4 
+      @prop.style.transparency = '70' if @tower.level == 4
     end
     
   end
@@ -361,6 +379,10 @@ module Projectile
     
     def set_prop(prop)
       @prop = prop
+      update_prop
+    end
+    
+    def update_prop
       @prop.style.x = (@x.to_i).to_s
       @prop.style.y = (@y.to_i).to_s
       @prop.style.width = '25'
@@ -369,6 +391,7 @@ module Projectile
       @prop.style.transparency = '30'
       @prop.style.transparency = '0' if @image_file == "images/projectiles/improbability_projectiles/Micah.png"
     end
+    
     def direct_projectile(game_clock = Time.now)
       @prop.style.transparency = (@prop.style.transparency.to_i + 10).to_s
     end
@@ -409,6 +432,10 @@ module Projectile
     
     def set_prop(prop)
       @prop = prop
+      update_prop
+    end
+    
+    def update_prop
       @prop.style.x = ((@creep.x - CENTERING).to_i).to_s
       @prop.style.y = ((@creep.y - CENTERING).to_i).to_s
       @prop.style.width = '19'
@@ -476,6 +503,9 @@ module Projectile
     end
     
     def set_prop(prop)
+    end
+
+    def update_prop
     end
     
     def direct_projectile(game_clock = Time.now)

@@ -94,7 +94,7 @@ menu {
   gradient_angle 330
   text_color "#1f1"
   font_size 24
-  transparency 70
+  transparency 60
 }
 start {
   width 110

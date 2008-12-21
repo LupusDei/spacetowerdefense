@@ -80,6 +80,15 @@ puts "you can't have such low level creep"
     def set_prop(prop)
       if prop != nil
         @prop = prop
+<<<<<<< HEAD:lib/creep/creep.rb
+=======
+      end
+      update_prop
+    end
+    
+    def update_prop
+      if @prop != nil
+>>>>>>> dab858359ccbcf06c07b2e3b5e51cbb878dd3c4d:lib/creep/creep.rb
         @prop.style.background_image = @image_file
         @prop.style.x = @x.to_i.to_s
         @prop.style.y = @y.to_i.to_s
