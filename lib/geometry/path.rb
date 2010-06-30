@@ -56,11 +56,8 @@ class Path
   def delete_obstical(obstical_to_be_deleted)
     index = 888888
     @obsticals.length.times {|i| index = i if @obsticals[i].top_left == obstical_to_be_deleted.top_left}
-    puts "in delete obstical"
     if index != 888888
       @obsticals.delete_at(index)
-    else
-      puts "nothing was deleted"
     end
     reconnect_obsticals
   end

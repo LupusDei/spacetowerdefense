@@ -154,7 +154,9 @@ describe Projectile::GammaProjectile do
     creep.x = 20
     creep.y = 20
     health = creep.health
-    projectile = tower.fire_projectile(creep, @close_creep)
+    projectile = tower.fire_projectile(creep,1, @close_creep)
+    projectile.close_creep.length.should == 2
+    
     2.times {|i| projectile.direct_projectile(i)}
     creep.health.should == health - tower.damage
     projectile.close_creep.length.should == 2
@@ -247,7 +249,6 @@ describe Projectile::GravityCorona do
     tower.fire_projectile(creep,close_creep)
     tower.fire_projectile(creep,close_creep)
     tower.fire_projectile(creep,close_creep)
-    puts "c1.m #{creep.move_speed} c2.m #{creep1.move_speed} c3.m #{creep2.move_speed}"
   end
   
 end
@@ -328,6 +329,15 @@ describe Projectile::PhasePulse do
     pulse = @tower.fire_projectile(@creep)
     pulse.x.should == 60
     pulse.y.should == 60
+  end
+
+  it "should have a power from the tower level to dictate the thickness of the pulse" do
+    @tower.level = 1
+    pulse = @tower.fire_projectile(@creep)
+    pulse.strength.should == 1
+    @tower.level = 2
+    pulse = @tower.fire_projectile(@creep)
+    pulse.strength.should == 2
   end
   
   it "should generate a series of points that represent a sine wave" do

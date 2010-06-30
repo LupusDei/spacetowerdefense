@@ -1,65 +1,47 @@
-require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
-require 'space.rb'
+require File.expand_path(File.dirname(__FILE__) + "/spec_helper.rb")
 
 
 describe Space do
   before do
     @space = Space.new
-    space_frame = mock("space_frame")
-    space_frame.stub!(:create_creep)
-    space_frame.stub!(:place_tower)
-    space_frame.stub!(:create_projectile)
-    space_frame.stub!(:remove_projectile)
-    space_frame.stub!(:kill_creep)
-    space_frame.stub!(:game_over)
-    space_frame.stub!(:update_all)
-    space_frame.stub!(:display_next_creep)
-    space_frame.stub!(:play_sound)
-    @space.new_game(space_frame)
+    @space_frame = mock("space_frame")
+    @space_frame.stub!(:create_creep)
+    @space_frame.stub!(:place_tower)
+    @space_frame.stub!(:create_projectile)
+    @space_frame.stub!(:remove_projectile)
+    @space_frame.stub!(:kill_creep)
+    @space_frame.stub!(:game_over)
+    @space_frame.stub!(:update_all)
+    @space_frame.stub!(:display_next_creep)
+    @space_frame.stub!(:play_sound)
+    @space_frame.stub!(:sound_option)
+    @space.new_game(@space_frame)
   end
   
   it "should make some creep" do
-    space = Space.new
-    space_frame = mock("space_frame")
-    space_frame.stub!(:create_creep)
-    space_frame.stub!(:update_all)
-    space_frame.stub!(:play_sound)
-    space.new_game(space_frame)
-    space.create_creep(space.creep_wave)
-    space.creep.should_not == nil
+    @space.create_creep(@space.creep_wave)
+    @space.creep.should_not == nil
   end
   
-  it "should not be able to stack towers" do
-     space = Space.new
-     space_frame = mock("space_frame")
-     space_frame.stub!(:place_tower)
-     space_frame.stub!(:update_all)
-     space_frame.stub!(:play_sound)
-     space.new_game(space_frame)
-     space.place_tower("GammaTower", 240, 240, 1).should == true
-     space.place_tower("GammaTower", 240, 240, 1).should == false
-     space.place_tower("GammaTower", 240, 260, 1).should == false
-     space.place_tower("GammaTower", 260, 240, 1).should == false
-     space.place_tower("GammaTower", 260, 260, 1).should == false
-     space.place_tower("GammaTower", 240, 220, 1).should == false
-     space.place_tower("GammaTower", 220, 240, 1).should == false
-     space.place_tower("GammaTower", 220, 220, 1).should == false
-     space.place_tower("GammaTower", 220, 260, 1).should == false
-     space.place_tower("GammaTower", 260, 220, 1).should == false
-     space.towers.length.should == 1
+  it "should not be able to stack towers" do     
+     @space.place_tower("GammaTower", 240, 240, 1).should == true
+     @space.place_tower("GammaTower", 240, 240, 1).should == false
+     @space.place_tower("GammaTower", 240, 260, 1).should == false
+     @space.place_tower("GammaTower", 260, 240, 1).should == false
+     @space.place_tower("GammaTower", 260, 260, 1).should == false
+     @space.place_tower("GammaTower", 240, 220, 1).should == false
+     @space.place_tower("GammaTower", 220, 240, 1).should == false
+     @space.place_tower("GammaTower", 220, 220, 1).should == false
+     @space.place_tower("GammaTower", 220, 260, 1).should == false
+     @space.place_tower("GammaTower", 260, 220, 1).should == false
+     @space.towers.length.should == 1
    end
    
      it "should not be able to place towers outside the screen" do
-       space = Space.new
-       space_frame = mock("space_frame")
-       space_frame.stub!(:place_tower)
-       space_frame.stub!(:update_all)
-       space_frame.stub!(:play_sound)
-       space.new_game(space_frame)
-       space.place_tower("GammaTower", -20, 0, 1).should == false
-       space.place_tower("GammaTower", 0, -20, 1).should == false
-       space.place_tower("GammaTower", 480, 0, 1).should == false
-       space.place_tower("GammaTower", 260, 480, 1).should == false
+       @space.place_tower("GammaTower", -20, 0, 1).should == false
+       @space.place_tower("GammaTower", 0, -20, 1).should == false
+       @space.place_tower("GammaTower", 480, 0, 1).should == false
+       @space.place_tower("GammaTower", 260, 480, 1).should == false
      end
      
    it "should have a creep wave counter and should send different creep each wave" do
@@ -67,39 +49,34 @@ describe Space do
      @space.creep_wave.should == 1
      @space.create_creep(@space.creep_wave)
      @space.creep.last.image_file.should == "images/Creep/creep1.png"
+     @space.end_game
      @space.start
      sleep(0.001)
      @space.creep_wave.should == 2
      @space.create_creep(@space.creep_wave)
      @space.creep.last.image_file.should == "images/Creep/creep2.png"
+     @space.end_game
    end
    
      it "should only place towers in multiples of 20" do
-       space = Space.new
-       space_frame = mock("space_frame")
-       space_frame.stub!(:place_tower)
-       space_frame.stub!(:update_all)
-       space_frame.stub!(:play_sound)
-       space.new_game(space_frame)
-       space.place_tower("GammaTower", 240, 240, 1).should == true
-       space.place_tower("GammaTower", 132, 14, 1).should == false
+       @space.place_tower("GammaTower", 240, 240, 1).should == true
+       @space.place_tower("GammaTower", 132, 14, 1).should == false
      end
      
    it "should set the tower name by icon clicked correctly" do
-     space = Space.new
-     space.set_tower("GammaTower")
-     space.tower_from_icon.should == "GammaTower"
+     @space.set_tower("GammaTower")
+     @space.tower_from_icon.should == "GammaTower"
    end
    
    it "should find the nearest applicable tower placement area" do
-     space = Space.new
-     x,y = space.find_nearest_placement(13, 13)
+     
+     x,y = @space.find_nearest_placement(13, 13)
      x.should == 20
      y.should == 20
-     x,y = space.find_nearest_placement(38, 118)
+     x,y = @space.find_nearest_placement(38, 118)
      x.should == 40
      y.should == 120
-     x,y = space.find_nearest_placement(42, 126)
+     x,y = @space.find_nearest_placement(42, 126)
      x.should == 40
      y.should == 120
    end
@@ -272,7 +249,6 @@ describe Space do
      creep.x = 15
      creep.y = 20
      @space.move_creep
-     puts creep.y
      creep.x.should == 15 + creep.move_speed
    end
      
@@ -291,64 +267,63 @@ describe Space do
   end
   
   it "should be able to upgrade a tower" do
-    @space.place_tower("GammaTower", 40,40,1).should == true
-    bank = @space.money.bank
-    damage = @space.towers.last.damage
-    @space.upgrade_tower(@space.towers.last)
-    @space.money.bank.should == bank - Tower::GammaTower.cost[2]
-    @space.towers.last.damage.should > damage
-  end
-  
-  it "should be able to sell a tower" do
-    @space.place_tower("GammaTower", 40,40,1).should == true
-    bank = @space.money.bank
-    @space.path.obsticals.length.should == 1
-    @space.path.nodes.length.should > 2
-    @space.sell_tower(@space.towers.last)
-    @space.towers.length.should == 0
-    @space.path.obsticals.length.should == 0
-    @space.path.nodes.length.should == 2
-    @space.money.bank.should == bank + (Tower::GammaTower.cost[1] / 2)
-  end
-  
-  it "should sell by adding the cost of all upgrades and putting half that in bank" do
-    @space.place_tower("GammaTower", 40,40,1).should == true
-    @space.upgrade_tower(@space.towers.last)
-    bank = @space.money.bank
-    @space.sell_tower(@space.towers.last)
-    @space.money.bank.should == bank + (Tower::GammaTower.cost[2] + Tower::GammaTower.cost[1]) / 2.0
-  end
-  
-  it "should send towers with splash a list of close creep when shooting" do
-    @space.place_tower("GammaTower", 40,40,1).should == true
-    3.times {@space.create_creep()}
-    3.times {|i| @space.creep[i].x = 20 + i*2 ; @space.creep[i].y = 20 + i*2}
-    health = @space.creep.last.health
-    @space.shoot
-    5.times {@space.move_projectiles and @space.game_clock += 1}
-    @space.projectiles.length.should == 0
-    @space.creep[0].health.should == health - @space.towers.last.damage
-    @space.creep[1].health.should == health - @space.towers.last.class.splash_damage[1]
-  end
-    
-  it "should display the next creep" do
-    @space.space_frame.should_receive(:display_next_creep).with("images/Creep/creep1.png")
-    @space.display_next_creep    
-  end
-  
-  it "should have towers wake up for every new wave" do
-    @space.place_tower("GammaTower", 40,40,1).should == true
-    @space.create_creep
-    creep = @space.creep.last
-    creep.x = 400
-    creep.y = 400
-    @space.game_clock = 2
-    random_clock = 2
-    @space.towers.last.is_time_to_shoot?(random_clock).should == true
-    @space.shoot
-    @space.towers.last.is_time_to_shoot?(random_clock).should == false
-    @space.start
-    @space.towers.last.is_time_to_shoot?(random_clock).should == true
-  end
+        @space.place_tower("GammaTower", 40,40,1).should == true
+        bank = @space.money.bank
+        damage = @space.towers.last.damage
+        @space.upgrade_tower(@space.towers.last)
+        @space.money.bank.should == bank - Tower::GammaTower.cost[2]
+        @space.towers.last.damage.should > damage
+      end
+      
+      it "should be able to sell a tower" do
+        @space.place_tower("GammaTower", 40,40,1).should == true
+        bank = @space.money.bank
+        @space.sell_tower(@space.towers.last)
+        
+        @space.towers.length.should == 0
+        @space.path.obsticals.length.should == 0
+        @space.path.nodes.length.should == 2
+        @space.money.bank.should == bank + (Tower::GammaTower.cost[1] / 1.5)
+      end
+      
+      it "should sell by adding the cost of all upgrades and putting half that in bank" do
+        @space.place_tower("GammaTower", 40,40,1).should == true
+        @space.upgrade_tower(@space.towers.last)
+        bank = @space.money.bank
+        @space.sell_tower(@space.towers.last)
+        @space.money.bank.should == bank + (Tower::GammaTower.cost[2] + Tower::GammaTower.cost[1]) / 1.5
+      end
+      
+      it "should send towers with splash a list of close creep when shooting" do
+        @space.place_tower("GammaTower", 40,40,1).should == true
+        3.times {@space.create_creep()}
+        3.times {|i| @space.creep[i].x = 20 + i*2 ; @space.creep[i].y = 20 + i*2}
+        health = @space.creep.last.health
+        @space.shoot
+        5.times {@space.move_projectiles and @space.game_clock += 1}
+        @space.projectiles.length.should == 0
+        @space.creep[0].health.should == health - @space.towers.last.damage
+        @space.creep[1].health.should == health - @space.towers.last.class.splash_damage[1]
+      end
+        
+      it "should display the next creep" do
+        @space.space_frame.should_receive(:display_next_creep).with("images/Creep/creep1.png")
+        @space.display_next_creep    
+      end
+      
+      it "should have towers wake up for every new wave" do
+        @space.place_tower("GammaTower", 40,40,1).should == true
+        @space.create_creep()
+        creep = @space.creep.last
+        creep.x = 400
+        creep.y = 400
+        @space.game_clock = 2
+        random_clock = 2
+        @space.towers.last.is_time_to_shoot?(random_clock).should == true
+        @space.shoot
+        @space.towers.last.is_time_to_shoot?(random_clock).should == false
+        @space.init_next_wave
+        @space.towers.last.is_time_to_shoot?(random_clock).should == true
+      end
 end
   

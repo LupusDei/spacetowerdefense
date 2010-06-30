@@ -86,7 +86,7 @@ module Tower
       return false
     end
     
-    def fire_projectile(creep, game_clock, close_creep = [])
+    def fire_projectile(creep, game_clock = 1, close_creep = [])
       @last_fired = game_clock
       @game_clock = game_clock
       return projectile = Projectile::GammaProjectile.new(self,creep,close_creep)
@@ -114,7 +114,7 @@ module Tower
     self.attack_speed = [0,1,1,1]
     self.cost = [0,5,10,30]
     self.image_file = "images/towers/KineticTower.png"
-    def fire_projectile(creep,game_clock, close_creep = [])
+    def fire_projectile(creep,game_clock=1, close_creep = [])
       @last_fired = game_clock
       projectile = Projectile::KineticProjectile.new(self,creep)
       x = (creep.x - @x)
@@ -152,7 +152,7 @@ module Tower
     self.attack_speed = [0,0.25,0.25,0.25]
     self.cost = [0,10,25,60]
     self.image_file = "images/towers/HotNeedleOfInquiry.png"
-    def fire_projectile(creep, game_clock)
+    def fire_projectile(creep, game_clock = 1)
       @last_fired = game_clock
       x = ((creep.x + 8) - (@x + 20))
       y = ((@y + 20) - (creep.y + 7))
@@ -220,7 +220,7 @@ module Tower
     self.splash_damage = self.damage
     self.chance_to_stun = [0,10, 15, 25,35]
     
-    def fire_projectile(creep,game_clock, close_creep = [])
+    def fire_projectile(creep,game_clock = 1, close_creep = [])
       @last_fired = game_clock
       @flip_flop = true if @flip_flop.nil?
       if @flip_flop
@@ -291,7 +291,7 @@ module Tower
       return self.class.rand_num.get(self.class.damage[@level])
     end
     
-    def fire_projectile(creep,game_clock)
+    def fire_projectile(creep,game_clock=1)
       @last_fired = game_clock
       change_image(Time.now)
       random_image_index = self.class.rand_num.get(AMOUNT_OF_IMAGES * 10)
@@ -331,7 +331,7 @@ module Tower
       self.class.damage[@level]
     end
     
-    def fire_projectile(creep, game_clock)
+    def fire_projectile(creep, game_clock=1)
       @last_fired = game_clock
       projectile = Projectile::TimeBubble.new(self,creep)
       return projectile
@@ -351,7 +351,7 @@ module Tower
     self.image_file = "images/towers/DimensionalPhaseTower.png"
     
     
-    def fire_projectile(creep,game_clock)
+    def fire_projectile(creep,game_clock = 1)
       @last_fired = game_clock
       projectile = Projectile::PhasePulse.new(self,creep)
       return projectile

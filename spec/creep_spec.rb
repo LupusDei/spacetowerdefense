@@ -129,7 +129,7 @@ describe Creep::Creep1 do
   it "should splat for a period of time when it dies" do
     creep = Creep::Creep1.new(1)
     creep.take_damage(10)
-    creep.image_file.should == "images/Creep/splat.jpg"
+    creep.image_file.should == "images/Creep/splat.png"
     creep.removable?.should == false
     sleep (0.6)
     creep.removable?.should == true

@@ -145,7 +145,6 @@ describe Tower::GammaTower do
     projectile = tower.fire_projectile(@creep, Time.now,@close_creep)
     health = @creep.health
     2.times {|i| projectile.direct_projectile(i)}
-    puts "creep #{@creep.x} #{@creep.y}  proj  #{projectile.x} #{projectile.y}"
     projectile.hit_creep?.should == true
     @creep.health.should == health - tower.damage
     @creep2.health.should == health - tower.class.splash_damage[1]

@@ -1,0 +1,89 @@
+ERROR 1: First wave, kinetic towers, 5 seconds in:
+  Occurrence 2: First wave, kinetic towers, 2 seconds in, moved mouse over menu button
+  O3: Immediately after game started.  Perhaps from moving cursor off "Send Wave"
+    java.lang.NullPointerException
+    	at limelight.ui.painting.BackgroundPainter.paint(Unknown Source)
+    	at limelight.ui.model.PropPanel.paintOn(Unknown Source)
+    	at limelight.ui.model.PaintJob.paintClipFor(Unknown Source)
+    	at limelight.ui.model.PaintJob.paint(Unknown Source)
+    	at limelight.ui.model.PaintJob.paintChild(Unknown Source)
+    	at limelight.ui.model.PaintJob.paintChildren(Unknown Source)
+    	at limelight.ui.model.PaintJob.paint(Unknown Source)
+    	at limelight.ui.model.PaintJob.paintChild(Unknown Source)
+    	at limelight.ui.model.PaintJob.paintChildren(Unknown Source)
+    	at limelight.ui.model.PaintJob.paint(Unknown Source)
+    	at limelight.ui.model.PaintJob.paint(Unknown Source)
+    	at limelight.background.PanelPainterLoop.paintDirtyRegions(Unknown Source)
+    	at limelight.background.PanelPainterLoop.execute(Unknown Source)
+    	at limelight.background.IdleThreadLoop.loop(Unknown Source)
+    	at limelight.background.IdleThreadLoop$1.run(Unknown Source)
+    	at java.lang.Thread.run(Thread.java:637)
+    	
+No immediately apparent effects.  Game continued to play, props still updated.
+  O2: Followed right away by E2.
+
+
+ERROR2: First wave, kinetic towers, 7 seconds in, after a pause/resume and E1:
+  Occurrence 2:First wave, kinetic towers, 3 seconds in
+  O3:  Same
+  O4:  Same
+    java.lang.NullPointerException
+    	at limelight.ui.model.FloaterLayout.doLayout(Unknown Source)
+    	at limelight.ui.model.PropPanelLayout.doLayout(Unknown Source)
+    	at limelight.ui.model.PropPanelLayout.doLayout(Unknown Source)
+    	at limelight.ui.model.BasePanel.doLayout(Unknown Source)
+    	at limelight.background.PanelPainterLoop.doAllLayouts(Unknown Source)
+    	at limelight.background.PanelPainterLoop.execute(Unknown Source)
+    	at limelight.background.IdleThreadLoop.loop(Unknown Source)
+    	at limelight.background.IdleThreadLoop$1.run(Unknown Source)
+    	at java.lang.Thread.run(Thread.java:637)
+    
+Mouse floater got stuck, other errors followed.
+  O2: Towers react, no projectile props. No repaint, only over paint.  Next wave invisible. Game aspects (Lives, Wave) updated.
+      Followed quickly by E3.
+  O3: Same, except not followed by E3.
+  O4: Projectiles did not immediately fail.  a following E3 caused it.
+
+
+ERROR3:  First wave, kinetic towers, 7 seconds in, after a pause/resume and E1, E2:
+  Occurence2: Fourth wave, after E5, kinetic towers, just placed dimensional phase tower
+    java.lang.NullPointerException
+    	at limelight.ui.model.FloaterLayout.doLayout(Unknown Source)
+    	at limelight.ui.model.BasePanel.doLayout(Unknown Source)
+    	at limelight.background.PanelPainterLoop.doAllLayouts(Unknown Source)
+    	at limelight.background.PanelPainterLoop.execute(Unknown Source)
+    	at limelight.background.IdleThreadLoop.loop(Unknown Source)
+    	at limelight.background.IdleThreadLoop$1.run(Unknown Source)
+    	at java.lang.Thread.run(Thread.java:637)
+
+Game continues.  Towers continue to react.  No Projectiles.  Old projectiles left un-updated. Creep continue. Screen only updated when overwritten.
+Next wave of creep fails to show up, however towers still spin in reaction.
+  O2: Dimensional painter fails to overwrite pen.  Repainting fails, but game continues.  New props fail, pen still draws.
+
+    
+ERROR4: First wave, kinetic towers, various times after an E1.
+  java.lang.NullPointerException
+  
+No apparent effect.
+
+
+ERROR5: Third wave, kinetic towers, mouse follower disabled.
+    java.lang.NullPointerException
+    	at limelight.ui.model.FloaterLayout.doLayout(Unknown Source)
+    	at limelight.ui.model.PropPanelLayout.doLayout(Unknown Source)
+    	at limelight.ui.model.PropPanelLayout.doPostLayoutOnChildren(Unknown Source)
+    	at limelight.ui.model.PropPanelLayout.doLayout(Unknown Source)
+    	at limelight.ui.model.PropPanelLayout.doPostLayoutOnChildren(Unknown Source)
+    	at limelight.ui.model.PropPanelLayout.doLayout(Unknown Source)
+    	at limelight.ui.model.PropPanelLayout.doLayout(Unknown Source)
+    	at limelight.ui.model.BasePanel.doLayout(Unknown Source)
+    	at limelight.background.PanelPainterLoop.doAllLayouts(Unknown Source)
+    	at limelight.background.PanelPainterLoop.execute(Unknown Source)
+    	at limelight.background.IdleThreadLoop.loop(Unknown Source)
+    	at limelight.background.IdleThreadLoop$1.run(Unknown Source)
+    	at java.lang.Thread.run(Thread.java:637)
+
+No apparent effect.
+
+
+

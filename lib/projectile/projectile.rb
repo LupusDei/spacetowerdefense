@@ -42,7 +42,7 @@ module Projectile
           @y -= @y_vector * 3
         end       
       end
-      @creep.take_damage(@tower.damage) if hit_creep? ==  true
+      @creep.take_damage(@tower.damage) if hit_creep?
       check_splash_damage if hit_creep?
     end
     
@@ -455,10 +455,11 @@ module Projectile
   class PhasePulse < GammaProjectile
     CENTERING = 20 unless defined?(CENTERING)
     
-      attr_accessor :x, :y, :tower, :creep, :prop, :wave_x, :wave_y
+      attr_accessor :x, :y, :tower, :creep, :prop, :wave_x, :wave_y, :strength
     
     def initialize(tower,creep)
       @tower = tower
+      @strength = tower.level
       @creep = creep
       @x = tower.x + CENTERING
       @y = tower.y + CENTERING
@@ -477,8 +478,7 @@ module Projectile
       @wave_y = []
       offset = rand(10)
       creep_x, creep_y = @creep.get_center
-      slope = (creep_y - @y) / (creep_x - @x).to_f if creep_x != @x
-      slope = creep_y - @y if creep_x == @x
+      slope = creep_x != @x ?  (creep_y - @y) / (creep_x - @x).to_f : creep_y - @y 
       distance = get_distance(@x,@y,creep_x,creep_y)
       if (-3..3) === slope
         20.times do |i|

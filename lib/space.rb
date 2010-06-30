@@ -30,11 +30,19 @@ class Space
   
   def place_lots_of_towers
     y = 20
+    first = true
     (20..440).step(80) do |y|
-      (0..440).step(40) {|x| place_tower_now("KineticTower", x, y, 1)}
-    end
-    (60..440).step(80) do |y|
-      (20..460).step(40) {|x| place_tower_now("KineticTower", x, y, 1)}
+      if first
+        (0..440).step(40) do |x|
+          place_tower_now("KineticTower", x, y, 1)
+        end
+        first = false
+      else
+        460.step(20,-40) do |x|
+          place_tower_now("KineticTower", x, y, 1)
+        end
+        first = true
+      end
     end
   end
     
@@ -46,14 +54,8 @@ class Space
       end
       @thread.kill
     end
-    @creep_countdown = 15
-    @creep_wave += 1
-    display_next_creep
-    @clock_difference = Time.now
-    @wave_countdown_clock = @game_clock + CLOCK + @creep_wave / 2
-    start_time = Time.now
-    end_time = false
-    reset_tower_cooldown
+    init_next_wave
+    time_to_end = false
     sound = CreepList.get_sound(@creep_wave)
     @space_frame.play_sound(sound) if @space_frame.sound_option == true
     @thread = Thread.start do
@@ -66,7 +68,7 @@ class Space
           end
           win_the_game?
           break if game_over?
-          break if end_time == true
+          break if time_to_end == true
           @game_clock += (Time.now - @clock_difference) <= 0.4 ? (Time.now - @clock_difference) : 0.4  
           @clock_difference = Time.now
           finish_making_creep if @remaining_creep.length > 0
@@ -79,10 +81,10 @@ class Space
           sell_tower_now(@tower_to_be_sold) if @to_be_sold
           @space_frame.update_all
           tick_countdown(@wave_countdown_clock - @game_clock)
-          end_time = true if (@wave_countdown_clock - @game_clock) <= 0
+          time_to_end = true if (@wave_countdown_clock - @game_clock) <= 0
         end
-        Thread.start {start} if end_time == true
-        end_time = false
+        Thread.start {start} if time_to_end == true
+        time_to_end = false
       rescue Exception => e
         puts e
         puts e.backtrace
@@ -94,6 +96,20 @@ class Space
     @money.collect_interest
 
   end
+  
+  def end_game
+    @thread.kill
+  end
+  
+  def init_next_wave
+    @creep_countdown = 15
+    @creep_wave += 1
+    display_next_creep
+    @clock_difference = Time.now
+    @wave_countdown_clock = @game_clock + CLOCK + @creep_wave / 2
+    reset_tower_cooldown
+  end
+  
   
   def game_over?
     if @lives.lives_left? == false
@@ -147,7 +163,7 @@ class Space
         if projectile.class.name == "Projectile::PhasePulse" and time_to_move == true
           pen = @space_frame.pen
           pen.color = 'orange'
-          pen.width = 1
+          pen.width = projectile.strength
           (projectile.wave_x.length - 1).times do |i|
             x1 = LEFT_MARGIN + projectile.wave_x[i]
             x2 = LEFT_MARGIN + projectile.wave_x[i+1]
@@ -183,7 +199,7 @@ class Space
   
   def reset_tower_cooldown
     @towers.each do |tower|
-      tower.sleep_for(-1)
+      tower.sleep_for(-10)
     end
   end
 
